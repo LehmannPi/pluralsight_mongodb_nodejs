@@ -4,7 +4,7 @@ function circulationRepo() {
   const url = 'mongodb://localhost:27017';
   const dbName = 'circulation';
 
-  function get() {
+  function get(query) {
     return new Promise(async (resolve, reject) => {
       const client = new MongoClient(url);
       try {
@@ -14,7 +14,7 @@ function circulationRepo() {
         db.listCollections();
 
         // https://mongodb.github.io/node-mongodb-native/6.7/classes/Collection.html#find/
-        const items = db.collection('newspapers').find(); // ! Creates a cursor for a filter that can be used to iterate over results from MongoDB
+        const items = db.collection('newspapers').find(query); // ! Creates a cursor for a filter that can be used to iterate over results from MongoDB
 
         resolve(await items.toArray());
         client.close();
