@@ -15,8 +15,16 @@ async function main() {
     const results = await circulationRepo.loadData(data);
     assert.equal(data.length, results.insertedCount);
 
-    const getData = await circulationRepo.get(data); // READ
+    const getData = await circulationRepo.get(); // READ
     assert.equal(data.length, getData.length);
+
+    const filterData = await circulationRepo.get({
+      Newspaper: getData[4].Newspaper,
+    }); // READ
+    assert.deepEqual(filterData[0], getData[4]); // ? Compare the object contents instead of the object
+
+    const limitData = await circulationRepo.get({}, 3);
+    assert.equal(limitData.length, 3);
   } catch (error) {
     console.log(error);
   } finally {
