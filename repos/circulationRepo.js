@@ -1,8 +1,29 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 function circulationRepo() {
   const url = 'mongodb://localhost:27017';
   const dbName = 'circulation';
+
+  function getById(id) {
+    return new Promise(async (resolve, reject) => {
+      const client = new MongoClient(url);
+      try {
+        await client.connect();
+        const db = client.db(dbName);
+
+        const objectId = new ObjectId(String(id));
+
+        const item = await db
+          .collection('newspapers')
+          .findOne({ _id: objectId }); // ? using only the string for the _id does not work - return null
+
+        resolve(item);
+        client.close();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 
   function get(query, limit) {
     return new Promise(async (resolve, reject) => {
@@ -49,7 +70,7 @@ function circulationRepo() {
     });
   }
 
-  return { loadData, get };
+  return { loadData, get, getById };
 }
 
 module.exports = circulationRepo();
