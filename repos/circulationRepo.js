@@ -4,7 +4,7 @@ function circulationRepo() {
   const url = 'mongodb://localhost:27017';
   const dbName = 'circulation';
 
-  function get(query) {
+  function get(query, limit) {
     return new Promise(async (resolve, reject) => {
       const client = new MongoClient(url);
       try {
@@ -14,7 +14,16 @@ function circulationRepo() {
         db.listCollections();
 
         // https://mongodb.github.io/node-mongodb-native/6.7/classes/Collection.html#find/
-        const items = db.collection('newspapers').find(query); // ! Creates a cursor for a filter that can be used to iterate over results from MongoDB
+        let items = db.collection('newspapers').find(query); // ! Creates a cursor for a filter that can be used to iterate over results from MongoDB
+
+        if (limit > 0) {
+          items = items.limit(limit);
+        }
+        /* 
+        ! Besides limit there are many other methods to manipulate the cursor and subsequently the returned data
+        ? These methodos can be checked at
+        * // https://mongodb.github.io/node-mongodb-native/6.7/classes/FindCursor.html
+        */
 
         resolve(await items.toArray());
         client.close();
