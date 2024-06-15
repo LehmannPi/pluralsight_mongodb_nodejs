@@ -46,6 +46,24 @@ async function main() {
       addedItem.insertedId.toString()
     );
     assert.deepEqual(addedItemQuery, newItem);
+
+    const updatedItem = await circulationRepo.update(
+      addedItem.insertedId.toString(),
+      {
+        Newspaper: 'My New Paper',
+        'Daily Circulation, 2004': 1,
+        'Daily Circulation, 2013': 2,
+        'Change in Daily Circulation, 2004-2013': 100,
+        'Pulitzer Prize Winners and Finalists, 1990-2003': 0,
+        'Pulitzer Prize Winners and Finalists, 2004-2014': 0,
+        'Pulitzer Prize Winners and Finalists, 1990-2014': 0,
+      }
+    );
+
+    const newAddedItemQuery = await circulationRepo.getById(
+      addedItem.insertedId.toString()
+    );
+    assert.deepEqual(newAddedItemQuery, updatedItem);
   } catch (error) {
     console.log(error);
   } finally {

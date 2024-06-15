@@ -86,7 +86,30 @@ function circulationRepo() {
     });
   }
 
-  return { add, loadData, get, getById };
+  function update(id, newItem) {
+    return new Promise(async (resolve, reject) => {
+      const client = new MongoClient(url);
+      try {
+        await client.connect();
+        const db = client.db(dbName);
+
+        const objectId = new ObjectId(String(id));
+
+        const updatedItem = await db
+          .collection('newspapers')
+          .findOneAndReplace({ _id: objectId }, newItem, {
+            returnDocument: 'after',
+          });
+
+        resolve(updatedItem);
+        client.close();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  return { add, get, getById, loadData, update };
 }
 
 module.exports = circulationRepo();
