@@ -3,7 +3,7 @@ const assert = require('assert');
 
 const circulationRepo = require('./repos/circulationRepo');
 const data = require('./circulation.json');
-const { count } = require('console');
+const { count, log } = require('console');
 
 const url = 'mongodb://localhost:27017';
 const dbName = 'circulation';
@@ -68,6 +68,9 @@ async function main() {
       addedItem.insertedId.toString()
     );
     assert.equal(deletedItem, null);
+
+    const avgFinalists = await circulationRepo.averageFinalists();
+    console.log('Average Finalists: ', avgFinalists);
   } catch (error) {
     console.log(error);
   } finally {
