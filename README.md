@@ -3,12 +3,12 @@ The result of `node app.js`
 
 ## MongoDB with Node.js 
 
+This is a project made with a course by Pluralsight Author Jonathan Mills.
+
 > [!NOTE]
-> This is a project made with a course by Pluralsight Author Jonathan Mills.
-> 
 > To run the project, it's necessary setting up MongoDB on your operational system. - [Install MongoDB](https://www.mongodb.com/docs/manual/installation/)
 
-Then, install the npm dependencies
+then, install the npm dependencies
 ```bash
 npm i
 ```
